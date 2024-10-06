@@ -5,6 +5,8 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
+import android.view.Surface
 import android.widget.Button
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +31,7 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageGrayscaleFilter
 import jp.co.cyberagent.android.gpuimage.filter.GPUImagePixelationFilter
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSketchFilter
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSolarizeFilter
+import jp.co.cyberagent.android.gpuimage.util.Rotation
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -48,6 +51,33 @@ class MainActivity : AppCompatActivity() {
     private lateinit var buttonContainer: FlowLayout
     private lateinit var cameraControl: CameraControl
 
+
+    private fun getRotation(orientation: Int): Rotation {
+        return when (orientation) {
+            90 -> Rotation.ROTATION_90
+            180 -> Rotation.ROTATION_180
+            270 -> Rotation.ROTATION_270
+            else -> Rotation.NORMAL
+        }
+    }
+
+    fun getCameraOrientation(): Int {
+        val degrees = when (windowManager.defaultDisplay.rotation) {
+            Surface.ROTATION_0 -> 0
+            Surface.ROTATION_90 -> 90
+            Surface.ROTATION_180 -> 180
+            Surface.ROTATION_270 -> 270
+            else -> 0
+        }
+        return (90 - degrees) % 360
+
+//        return if (false) {
+//            (90 + degrees) % 360
+//        } else { // back-facing
+//            (90 - degrees) % 360
+//        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -57,21 +87,18 @@ class MainActivity : AppCompatActivity() {
         gpuImageView = findViewById(R.id.gpu_image_view)
         buttonContainer = findViewById(R.id.button_container)
         zoomSlider = findViewById(R.id.zoom_slider)
-
         addButtons()
 
-        gpuImageView.rotation = 90F
+        gpuImageView.setRotation(getRotation(getCameraOrientation()))
         gpuImageView.setScaleType(GPUImage.ScaleType.CENTER_CROP)
-
         requestPermissions(arrayOf(Manifest.permission.CAMERA), REQUEST_CODE_PERMISSIONS)
-
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
         cameraProviderFuture.addListener({
             cameraProvider = cameraProviderFuture.get()
             startCameraIfReady()
         }, ContextCompat.getMainExecutor(this))
-
         zoomSlider.addOnChangeListener { _, value, _ ->
+            Log.e("ThisIsSattiii----->", "onCreate: ${value}", )
             cameraControl.setLinearZoom(value)
         }
     }
@@ -123,8 +150,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-        val camera = cameraProvider!!.bindToLifecycle(this, cameraSelector, imageAnalysis)
-        cameraControl = camera.cameraControl
+        val camera = cameraProvider?.bindToLifecycle(this, cameraSelector, imageAnalysis)
+        cameraControl = camera?.cameraControl ?: return
+
     }
 
     private fun allocateBitmapIfNecessary(width: Int, height: Int): Bitmap {

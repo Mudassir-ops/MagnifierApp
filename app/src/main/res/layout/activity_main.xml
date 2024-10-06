@@ -9,9 +9,8 @@
         android:id="@+id/gpu_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:gpuimage_show_loading="false"
+        app:gpuimage_show_loading="true"
         app:gpuimage_surface_type="texture_view"
-        app:layout_constraintDimensionRatio="H,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,7 +18,7 @@
     <com.nex3z.flowlayout.FlowLayout
         android:id="@+id/button_container"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
