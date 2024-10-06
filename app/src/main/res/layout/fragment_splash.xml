@@ -1,21 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_splash"
     tools:context=".fragment.splashFragment.SplashFragment">
 
 
-    <Button
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgSplash"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/txtSplash"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/_12sdp"
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread"
+        app:srcCompat="@drawable/splash_icon" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtSplash"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center"
+        android:text="@string/this_app_uses_for_magnifier_and_needs_the_camera_permission_is_work_poperly"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_16sdp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/btnSplash"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="splash"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgSplash"
+        app:layout_constraintWidth_percent="0.6" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSplash"
-        app:layout_constraintWidth_percent="0.5"/>
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:background="@drawable/bg_button"
+        android:text="@string/grant_permission"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

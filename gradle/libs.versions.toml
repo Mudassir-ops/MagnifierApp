@@ -18,6 +18,10 @@ glide_version = "4.16.0"
 gson_version = "2.10"
 lottie_animation = "6.5.2"
 room_version = "2.5.2"
+camerax_version = "1.2.2"
+gpuimage = "2.1.0"
+gpuimageVersion = "2.0.4"
+jpGpuimage = "2.1.0"
 
 
 [libraries]
@@ -43,6 +47,13 @@ lottie_animation ={group = "com.airbnb.android", name="lottie",version.ref = "lo
 room_runtime = {group = "androidx.room",name= "room-runtime",version.ref = "room_version"}
 room_compiler = {group = "androidx.room",name = "room-compiler",version.ref = "room_version"}
 room_ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room_version" }
+camera_core ={group ="androidx.camera", name ="camera-core",version.ref = "camerax_version"}
+camera_camera2 ={group ="androidx.camera", name ="camera-camera2",version.ref = "camerax_version"}
+camera_lifcycle ={group ="androidx.camera", name ="camera-lifecycle",version.ref = "camerax_version"}
+camera_video ={group ="androidx.camera", name ="camera-video",version.ref = "camerax_version"}
+camera_view ={group ="androidx.camera", name ="camera-view",version.ref = "camerax_version"}
+camera_extensions ={group ="androidx.camera", name ="camera-extensions",version.ref = "camerax_version"}
+gpuimage = { module = "jp.co.cyberagent.android:gpuimage", version.ref = "gpuimage" }
 
 
 [plugins]

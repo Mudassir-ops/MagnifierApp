@@ -1,5 +1,16 @@
 <resources>
-    <string name="app_name">MagnifierApp</string>
+    <string name="app_name">Magnifier App</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="this_app_uses_for_magnifier_and_needs_the_camera_permission_is_work_poperly">This app uses for magnification and needs the camera permission is work properly</string>
+    <string name="grant_permission">Get Permission</string>
+    <string name="todo">todo</string>
+    <string name="remove_ads">Remove Ads</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="more_apps_ad">More Apps (Ad)</string>
+    <string name="feedback_us">Feedback Us</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="remove_wallpaper">Remove Wallpaper</string>
+    <string name="x1">x1</string>
+    <string name="filter">Filter:</string>
 </resources>
