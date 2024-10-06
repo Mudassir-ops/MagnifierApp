@@ -9,7 +9,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.activity.addCallback
+import androidx.annotation.OptIn
 import androidx.camera.core.CameraControl
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ExperimentalGetImage
@@ -28,7 +30,21 @@ import com.example.utils.visible
 import com.google.android.material.internal.FlowLayout
 import com.google.android.material.slider.Slider
 import dagger.hilt.android.AndroidEntryPoint
+import jp.co.cyberagent.android.gpuimage.GPUImage
 import jp.co.cyberagent.android.gpuimage.GPUImageView
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageBrightnessFilter
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageColorInvertFilter
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageContrastFilter
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageGlassSphereFilter
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageGrayscaleFilter
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageSketchFilter
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageSolarizeFilter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -39,6 +55,8 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
     private var adapter: FilterAdapter? = null
     private var isFilterClicked = true
+    private var zoomJob: Job? = null
+
 
     companion object {
         const val REQUEST_CODE_PERMISSIONS = 10
@@ -60,7 +78,33 @@ class HomeFragment : Fragment() {
         adapter = FilterAdapter(filterList = listOf(), onItemClick = { itemAndPosition ->
             val (filterDataModel, position) = itemAndPosition
             println("Item clicked: ${filterDataModel.filterImage} at position $position")
-            activity?.toast("position $position")
+           // activity?.toast("position $position")
+            when(position){
+                0->{
+                   binding?.cameraPreview?.filter =  GPUImageFilter()
+                }
+                1->{
+                    binding?.cameraPreview?.filter =  GPUImageSketchFilter()
+                }
+                2->{
+                    binding?.cameraPreview?.filter =   GPUImageColorInvertFilter()
+                }
+                3->{
+                    binding?.cameraPreview?.filter =   GPUImageSolarizeFilter()
+                }
+                4->{
+                    binding?.cameraPreview?.filter =   GPUImageGrayscaleFilter()
+                }
+                5->{
+                    binding?.cameraPreview?.filter =    GPUImageBrightnessFilter(0.8f)
+                }
+                6->{
+                    binding?.cameraPreview?.filter =   GPUImageContrastFilter(2f)
+                }
+                7->{
+                    binding?.cameraPreview?.filter =   GPUImageGlassSphereFilter()
+                }
+            }
 
 
         })
@@ -91,7 +135,10 @@ class HomeFragment : Fragment() {
             binding?.filterRecyclerView?.adapter = adapter
         }
 
-        gpuImageView= binding?.cameraPreview!!
+        gpuImageView= binding?.cameraPreview?:return
+       // gpuImageView.rotation = 270F
+      //  gpuImageView.setScaleType(GPUImage.ScaleType.CENTER_CROP)
+
         clickListener()
         observerViewModel()
         cameraXSetup()
@@ -149,6 +196,26 @@ class HomeFragment : Fragment() {
             }
 
 
+
+            binding?.verticalSeekbar?.apply {
+                max = 100
+                setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                        zoomJob?.cancel()
+                        zoomJob = CoroutineScope(Dispatchers.Main).launch {
+                            delay(10)
+                            val zoomLevel = progress / 100f
+                            cameraControl.setLinearZoom(zoomLevel)
+                        }
+                    }
+
+                    override fun onStartTrackingTouch(seekBar: SeekBar) {}
+
+                    override fun onStopTrackingTouch(seekBar: SeekBar) {}
+                })
+            }
+
+
         }
     }
 
@@ -185,7 +252,7 @@ class HomeFragment : Fragment() {
 //        }
     }
 
-    @androidx.annotation.OptIn(ExperimentalGetImage::class)
+    @OptIn(ExperimentalGetImage::class)
     @SuppressLint("UnsafeExperimentalUsageError")
     private fun startCameraIfReady() {
 
@@ -196,7 +263,7 @@ class HomeFragment : Fragment() {
 
         imageAnalysis.setAnalyzer(executor) { imageProxy ->
             val bitmap = allocateBitmapIfNecessary(imageProxy.width, imageProxy.height)
-            converter.yuvToRgb(imageProxy.image!!, bitmap)
+            imageProxy.image?.let { converter.yuvToRgb(it, bitmap) }
             imageProxy.close()
             gpuImageView.post {
                 gpuImageView.setImage(bitmap)
