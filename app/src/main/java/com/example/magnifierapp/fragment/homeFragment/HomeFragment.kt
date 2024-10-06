@@ -10,6 +10,7 @@ import android.view.Surface
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.annotation.OptIn
 import androidx.camera.core.CameraControl
@@ -26,7 +27,6 @@ import com.example.magnifierapp.databinding.FragmentHomeBinding
 import com.example.magnifierapp.fragment.camerax.YuvToRgbConverter
 import com.example.utils.gone
 import com.example.utils.visible
-import com.google.android.material.slider.Slider
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.cyberagent.android.gpuimage.GPUImage
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageBrightnessFilter
@@ -38,11 +38,6 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageGrayscaleFilter
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSketchFilter
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSolarizeFilter
 import jp.co.cyberagent.android.gpuimage.util.Rotation
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -132,8 +127,7 @@ class HomeFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding?.root
@@ -169,8 +163,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun clickListener() {
-
         binding?.run {
+            icCamera.setOnClickListener {
+                saveImage()
+            }
             icMenu.setOnClickListener {
                 try {
                     if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -212,9 +208,7 @@ class HomeFragment : Fragment() {
                 max = 100
                 setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                     override fun onProgressChanged(
-                        seekBar: SeekBar,
-                        progress: Int,
-                        fromUser: Boolean
+                        seekBar: SeekBar, progress: Int, fromUser: Boolean
                     ) {
                         val zoomValue = progress / 100.0f
                         Log.e("ZoomValue", "onProgressChanged: $progress -> Zoom: $zoomValue")
@@ -222,12 +216,9 @@ class HomeFragment : Fragment() {
                     }
 
                     override fun onStartTrackingTouch(seekBar: SeekBar) {}
-
                     override fun onStopTrackingTouch(seekBar: SeekBar) {}
                 })
             }
-
-
         }
     }
 
@@ -265,12 +256,12 @@ class HomeFragment : Fragment() {
     @OptIn(ExperimentalGetImage::class)
     @SuppressLint("UnsafeExperimentalUsageError")
     private fun startCameraIfReady() {
-        val imageAnalysis = ImageAnalysis.Builder()
-            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-            .build()
+        val imageAnalysis =
+            ImageAnalysis.Builder().setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .build()
         imageAnalysis.setAnalyzer(executor) { imageProxy ->
             val bitmap = allocateBitmapIfNecessary(imageProxy.width, imageProxy.height)
-            imageProxy.image?.let { converter.yuvToRgb(it, bitmap) }
+            imageProxy.image?.let { bitmap?.let { it1 -> converter.yuvToRgb(it, it1) } }
             imageProxy.close()
             binding?.cameraPreview?.apply {
                 post {
@@ -283,12 +274,19 @@ class HomeFragment : Fragment() {
         cameraControl = camera?.cameraControl ?: return
     }
 
-    private fun allocateBitmapIfNecessary(width: Int, height: Int): Bitmap {
-        if (bitmap == null || bitmap!!.width != width || bitmap!!.height != height) {
+    private fun allocateBitmapIfNecessary(width: Int, height: Int): Bitmap? {
+        if (bitmap == null || bitmap?.width != width || bitmap?.height != height) {
             bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         }
-        return bitmap!!
+        return bitmap
     }
 
-
+    private fun saveImage() {
+        val fileName = System.currentTimeMillis().toString() + ".jpg"
+        binding?.cameraPreview?.saveToPictures("ParentalLock", fileName) { uri ->
+            Toast.makeText(
+                context ?: return@saveToPictures, "Saved: $uri", Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
 }
