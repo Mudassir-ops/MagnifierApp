@@ -4,8 +4,6 @@ plugins {
     alias(libs.plugins.dagger.hilt.plugins)
     id("kotlin-kapt")
 
-
-
     alias(libs.plugins.google.gms.google.services)
     alias(libs.plugins.google.firebase.crashlytics)
 }
