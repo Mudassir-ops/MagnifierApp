@@ -18,5 +18,14 @@
         android:id="@+id/homeFragment"
         android:name="com.example.magnifierapp.fragment.homeFragment.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_displayImageFragment"
+            app:destination="@id/displayImageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/displayImageFragment"
+        android:name="com.example.magnifierapp.fragment.displayImageFragment.DisplayImageFragment"
+        android:label="fragment_display_image"
+        tools:layout="@layout/fragment_display_image" />
 </navigation>

@@ -1,4 +1,4 @@
-package com.example.magnifierapp.fragment.camerax
+package com.example.magnifierapp.camerax
 
 import android.content.Context
 import android.graphics.Bitmap

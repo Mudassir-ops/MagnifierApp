@@ -13,4 +13,9 @@
     <string name="remove_wallpaper">Remove Wallpaper</string>
     <string name="x1">x1</string>
     <string name="filter">Filter:</string>
+    <string name="later">Later</string>
+    <string name="rate_now">Rate Now</string>
+    <string name="privacy_policy_link" translatable="false">https://atonomushubofficial.blogspot.com/2024/10/magnifier-plus-privacy-policy.html</string>
+    <string name="more_app_link" translatable="false">https://play.google.com/store/apps/dev?id=7068253360089619762</string>
+    <string name="no_launcher">No Launcher</string>
 </resources>

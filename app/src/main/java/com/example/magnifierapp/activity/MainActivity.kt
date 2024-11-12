@@ -1,4 +1,4 @@
-package com.example.magnifierapp.fragment.activity
+package com.example.magnifierapp.activity
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
