@@ -10,8 +10,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.WindowManager
-import com.example.magnifierapp.databinding.RateUsDialogBinding
 import com.example.utils.feedBackWithEmail
+import etech.magnifierplus.databinding.RateUsDialogBinding
 
 class RateUsDialog(
     activity: Activity

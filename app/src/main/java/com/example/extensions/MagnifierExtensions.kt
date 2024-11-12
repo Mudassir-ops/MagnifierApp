@@ -9,9 +9,9 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.camera.core.FocusMeteringAction
 import androidx.camera.core.SurfaceOrientedMeteringPointFactory
 import androidx.lifecycle.lifecycleScope
-import com.example.magnifierapp.R
-import com.example.magnifierapp.databinding.FragmentHomeBinding
 import com.example.magnifierapp.fragment.homeFragment.HomeFragment
+import etech.magnifierplus.R
+import etech.magnifierplus.databinding.FragmentHomeBinding
 import jp.co.cyberagent.android.gpuimage.GPUImageView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

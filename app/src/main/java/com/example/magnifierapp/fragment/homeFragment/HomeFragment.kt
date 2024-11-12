@@ -31,9 +31,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.extensions.enableTapToFocus
 import com.example.extensions.onKeyDown
 import com.example.extensions.setZoom
-import com.example.magnifierapp.R
+import etech.magnifierplus.R
 import com.example.magnifierapp.camerax.YuvToRgbConverter
-import com.example.magnifierapp.databinding.FragmentHomeBinding
+import etech.magnifierplus.databinding.FragmentHomeBinding
 import com.example.magnifierapp.dialog.RateUsDialog
 import com.example.utils.ImageSaver
 import com.example.utils.feedBackWithEmail

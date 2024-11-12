@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.magnifierapp.databinding.FragmentDisplayImageBinding
+import etech.magnifierplus.databinding.FragmentDisplayImageBinding
 import com.example.magnifierapp.fragment.homeFragment.FilterAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.cyberagent.android.gpuimage.GPUImage

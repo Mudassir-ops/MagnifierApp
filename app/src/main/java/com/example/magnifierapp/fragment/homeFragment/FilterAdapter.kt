@@ -3,7 +3,7 @@ package com.example.magnifierapp.fragment.homeFragment
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.magnifierapp.databinding.FilterItemBinding
+import etech.magnifierplus.databinding.FilterItemBinding
 
 class FilterAdapter(private var filterList: List<FilterDataModel>,val onItemClick: (Pair<FilterDataModel, Int>) -> Unit) :
     RecyclerView.Adapter<FilterAdapter.ViewHolder>() {

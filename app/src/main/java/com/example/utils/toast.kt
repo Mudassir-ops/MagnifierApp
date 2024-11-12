@@ -12,7 +12,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
 import android.widget.Toast
-import com.example.magnifierapp.R
+import etech.magnifierplus.R
 import java.io.File
 import java.io.FileOutputStream
 
