@@ -1,0 +1,41 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Secondary progress shape -->
+    <item android:id="@+id/secondaryProgress">
+        <shape android:shape="rectangle">
+            <size android:width="@dimen/_3sdp"
+            android:height="3dp"/>
+            <solid android:color="@color/white" />
+            <corners android:radius="12dp" />
+        </shape>
+    </item>
+
+    <!-- Progress shape -->
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape android:shape="rectangle">
+                <size android:width="3dp"
+                android:height="3dp"/>
+                <solid android:color="@color/white" />
+                <corners android:radius="6dp" />
+            </shape>
+        </clip>
+    </item>
+
+</layer-list>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<layer-list xmlns:android="http://schemas.android.com/apk/res/android">-->
+
+    <!--    <item android:id="@+id/secondaryProgress">-->
+    <!--        <shape android:shape="rectangle">-->
+    <!--            <size android:width="@dimen/_3sdp"/>-->
+    <!--            <solid android:color="@color/blue_color"/>-->
+    <!--            <corners android:radius="12dp"/>-->
+    <!--        </shape>-->
+    <!--    </item>-->
+
+    <!--    <item android:id="@android:id/progress">-->
+    <!--        <clip android:drawable="@drawable/bg_progress"/>-->
+    <!--    </item>-->
+    <!--</layer-list>-->

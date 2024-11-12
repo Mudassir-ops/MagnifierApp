@@ -2,4 +2,17 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="dark_blue">#242C64</color>
+    <color name="light_blue">#6573ED</color>
+    <color name="blue_0_percent">#000210</color>
+    <color name="blue_38_percent">#0C1553</color>
+    <color name="red_color">#F44336</color>
+    <color name="blue_color">#6E77F8</color>
+    <color name="blue_tint">#243199</color>
+    <color name="app_color">#729C9B</color>
+    <color name="flash_on_color">#EEFF03</color>
+    <color name="flash_off_color">#172176</color>
+    <color name="selected_star_color">#FFD700</color> <!-- Gold color for selected stars -->
+    <color name="unselected_star_color">#C0C0C0</color> <!-- Silver or grey for unselected stars -->
+
 </resources>

@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "CameraXZoomIn"
+rootProject.name = "MagnifierApp"
 include(":app")
  

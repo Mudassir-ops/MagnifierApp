@@ -1,72 +1,22 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
 
-    <jp.co.cyberagent.android.gpuimage.GPUImageView
-        android:id="@+id/gpu_image_view"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:gpuimage_show_loading="true"
-        app:gpuimage_surface_type="texture_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.nex3z.flowlayout.FlowLayout
-        android:id="@+id/button_container"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+        app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gpu_image_view" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/nav_graph" />
 
-    <com.google.android.material.slider.Slider
-        android:id="@+id/zoom_slider"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        android:value="0"
-        android:valueTo="1" />
-
-</RelativeLayout>
-
-
-    <!--<?xml version="1.0" encoding="utf-8"?>-->
-    <!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-    <!--    xmlns:tools="http://schemas.android.com/tools"-->
-    <!--    android:id="@+id/main"-->
-    <!--    android:layout_width="match_parent"-->
-    <!--    android:layout_height="match_parent"-->
-    <!--    tools:context=".MainActivity">-->
-
-    <!--    <androidx.camera.view.PreviewView-->
-    <!--        android:id="@+id/previewView"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:layout_alignParentTop="true"-->
-    <!--        android:layout_alignParentStart="true" />-->
-
-
-    <!--&lt;!&ndash;    <jp.co.cyberagent.android.gpuimage.GPUImageView&ndash;&gt;-->
-    <!--&lt;!&ndash;        android:id="@+id/gpuImageView"&ndash;&gt;-->
-    <!--&lt;!&ndash;        android:layout_width="match_parent"&ndash;&gt;-->
-    <!--&lt;!&ndash;        android:layout_height="match_parent" />&ndash;&gt;-->
-
-    <!--    <com.google.android.material.slider.Slider-->
-    <!--        android:id="@+id/zoomSlider"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_alignParentBottom="true"-->
-    <!--        android:valueFrom="1.0"-->
-    <!--        android:valueTo="10.0"-->
-    <!--        android:value="1.0"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        android:layout_margin="16dp" />-->
-
-    <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
+</androidx.constraintlayout.widget.ConstraintLayout>

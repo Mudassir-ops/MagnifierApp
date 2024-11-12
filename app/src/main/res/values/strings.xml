@@ -1,3 +1,23 @@
 <resources>
-    <string name="app_name">CameraXZoomIn</string>
+    <string name="app_name">Magnifier App</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="this_app_uses_for_magnifier_and_needs_the_camera_permission_is_work_poperly">To properly utilize the functionality of the magnifier app, please grant access to the camera permission.</string>
+    <string name="grant_permission">Get Permission</string>
+    <string name="todo">todo</string>
+    <string name="remove_ads">Remove Ads</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="more_apps_ad">More Apps (Ad)</string>
+    <string name="feedback_us">Feedback Us</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="remove_wallpaper">Remove Wallpaper</string>
+    <string name="x1">x1</string>
+    <string name="filter">Filter:</string>
+    <string name="later">Later</string>
+    <string name="rate_now">Rate Now</string>
+    <string name="privacy_policy_link" translatable="false">https://atonomushubofficial.blogspot.com/2024/10/magnifier-plus-privacy-policy.html</string>
+    <string name="more_app_link" translatable="false">https://play.google.com/store/apps/dev?id=7068253360089619762</string>
+    <string name="no_launcher">No Launcher</string>
+    <string name="version_1_1">Version 1.1</string>
+    <string name="zoom_level_text">x%1$s</string>
+    <string name="x1second">x1</string>
 </resources>
