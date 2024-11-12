@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_splash"
     tools:context=".fragment.splashFragment.SplashFragment">
 
 
@@ -28,14 +27,14 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/this_app_uses_for_magnifier_and_needs_the_camera_permission_is_work_poperly"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="@dimen/_16sdp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/btnSplash"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgSplash"
-        app:layout_constraintWidth_percent="0.6" />
+        app:layout_constraintWidth_percent="0.8" />
 
 
     <androidx.appcompat.widget.AppCompatButton

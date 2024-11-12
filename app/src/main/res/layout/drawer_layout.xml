@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_color"
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <View
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/app_name"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="@dimen/_20ssp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/imgDrawerIcon" />
@@ -48,6 +48,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.constraintlayout.widget.Group
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="viewRemoveAds,icRemoveAds,txtRemoveAds,icForwardRemoveAds"/>
 
     <View
         android:id="@+id/viewRemoveAds"
@@ -120,7 +126,7 @@
         android:layout_height="0dp"
         android:text="@string/rate_us"
         android:gravity="center_vertical"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:layout_marginStart="@dimen/_15sdp"
         app:layout_constraintTop_toTopOf="@id/icRateUs"
         app:layout_constraintBottom_toBottomOf="@id/icRateUs"
@@ -165,7 +171,7 @@
         android:layout_height="0dp"
         android:text="@string/feedback_us"
         android:gravity="center_vertical"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:layout_marginStart="@dimen/_15sdp"
         app:layout_constraintTop_toTopOf="@id/icFeedback"
         app:layout_constraintBottom_toBottomOf="@id/icFeedback"
@@ -209,7 +215,7 @@
         android:layout_height="0dp"
         android:text="@string/more_apps_ad"
         android:gravity="center_vertical"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:layout_marginStart="@dimen/_15sdp"
         app:layout_constraintTop_toTopOf="@id/icMoreApps"
         app:layout_constraintBottom_toBottomOf="@id/icMoreApps"
@@ -253,7 +259,7 @@
         android:layout_height="0dp"
         android:text="@string/privacy_policy"
         android:gravity="center_vertical"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:layout_marginStart="@dimen/_15sdp"
         app:layout_constraintTop_toTopOf="@id/icPrivacyPolicy"
         app:layout_constraintBottom_toBottomOf="@id/icPrivacyPolicy"
@@ -270,5 +276,16 @@
         app:layout_constraintEnd_toEndOf="@id/viewPrivacyPolicy"
         app:layout_constraintBottom_toBottomOf="@id/viewPrivacyPolicy"
         app:layout_constraintStart_toEndOf="@id/txtPrivacyPolicy"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/version_1_1"
+        app:fontFamily="sans-serif"
+        android:layout_marginBottom="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
