@@ -7,6 +7,8 @@ plugins {
     alias(libs.plugins.google.firebase.crashlytics)
 }
 
+
+
 android {
     namespace = "com.example.magnifierapp"
     compileSdk = 34
