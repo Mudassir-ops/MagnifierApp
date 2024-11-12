@@ -3,15 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.dagger.hilt.plugins)
     id("kotlin-kapt")
-    alias(libs.plugins.google.gms.google.services)
-    alias(libs.plugins.google.firebase.crashlytics)
+   // alias(libs.plugins.google.gms.google.services)
 }
-
-
-
-
-
-
 android {
     namespace = "com.example.magnifierapp"
     compileSdk = 34
@@ -22,7 +15,6 @@ android {
         targetSdk = 34
         versionCode = 2
         versionName = "1.1"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", "Magnifier-v$versionCode($versionName)")
 
@@ -66,8 +58,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.firebase.analytics)
-    implementation(libs.firebase.crashlytics)
+   // implementation(libs.firebase.analytics)
+   // implementation(libs.firebase.crashlytics)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

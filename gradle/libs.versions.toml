@@ -60,9 +60,6 @@ camera_view ={group ="androidx.camera", name ="camera-view",version.ref = "camer
 camera_extensions ={group ="androidx.camera", name ="camera-extensions",version.ref = "camerax_version"}
 gpuimage = { module = "jp.co.cyberagent.android:gpuimage", version.ref = "gpuimage" }
 rotation_image = {group = "androidx.exifinterface",name ="exifinterface",version.ref = "exit_interface"}
-firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalytics" }
-firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebaseCrashlytics" }
-
 
 
 [plugins]
@@ -70,5 +67,4 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 dagger-hilt-plugins = { id = "com.google.dagger.hilt.android",version.ref = "dagger_Hilt_Version"}
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
-google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "googleFirebaseCrashlytics" }
 
