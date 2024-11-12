@@ -3,10 +3,11 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.dagger.hilt.plugins)
     id("kotlin-kapt")
-    // alias(libs.plugins.google.gms.google.services)
+     alias(libs.plugins.google.gms.google.services)
+    id("com.google.firebase.crashlytics")
 }
 android {
-    namespace = "com.example.magnifierapp"
+    namespace = "etech.magnifierplus"
     compileSdk = 34
 
     defaultConfig {
@@ -59,8 +60,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    // implementation(libs.firebase.analytics)
-    // implementation(libs.firebase.crashlytics)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -101,6 +100,8 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
 }
 
 kapt {

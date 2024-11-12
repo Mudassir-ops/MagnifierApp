@@ -1,6 +1,6 @@
 package com.example.magnifierapp.fragment.homeFragment
 
-import com.example.magnifierapp.R
+import etech.magnifierplus.R
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor() {

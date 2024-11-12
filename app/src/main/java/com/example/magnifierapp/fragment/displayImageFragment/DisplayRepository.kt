@@ -1,6 +1,6 @@
 package com.example.magnifierapp.fragment.displayImageFragment
 
-import com.example.magnifierapp.R
+import etech.magnifierplus.R
 import com.example.magnifierapp.fragment.homeFragment.FilterDataModel
 import javax.inject.Inject
 

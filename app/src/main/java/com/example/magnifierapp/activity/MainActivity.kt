@@ -7,9 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.fragment.NavHostFragment
-import com.example.magnifierapp.R
 import com.example.magnifierapp.fragment.homeFragment.HomeFragment
 import dagger.hilt.android.AndroidEntryPoint
+import etech.magnifierplus.R
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

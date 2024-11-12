@@ -15,8 +15,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.magnifierapp.R
-import com.example.magnifierapp.databinding.FragmentSplashBinding
+import etech.magnifierplus.R
+import etech.magnifierplus.databinding.FragmentSplashBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
