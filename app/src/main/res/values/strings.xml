@@ -2,7 +2,7 @@
     <string name="app_name">Magnifier App</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="this_app_uses_for_magnifier_and_needs_the_camera_permission_is_work_poperly">This app uses for magnification and needs the camera permission is work properly</string>
+    <string name="this_app_uses_for_magnifier_and_needs_the_camera_permission_is_work_poperly">To properly utilize the functionality of the magnifier app, please grant access to the camera permission.</string>
     <string name="grant_permission">Get Permission</string>
     <string name="todo">todo</string>
     <string name="remove_ads">Remove Ads</string>
@@ -18,4 +18,5 @@
     <string name="privacy_policy_link" translatable="false">https://atonomushubofficial.blogspot.com/2024/10/magnifier-plus-privacy-policy.html</string>
     <string name="more_app_link" translatable="false">https://play.google.com/store/apps/dev?id=7068253360089619762</string>
     <string name="no_launcher">No Launcher</string>
+    <string name="version_1_1">Version 1.1</string>
 </resources>
