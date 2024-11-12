@@ -19,4 +19,5 @@
     <string name="no_launcher">No Launcher</string>
     <string name="version_1_1">Version 1.1</string>
     <string name="zoom_level_text">x%1$s</string>
+    <string name="x1second">x1</string>
 </resources>

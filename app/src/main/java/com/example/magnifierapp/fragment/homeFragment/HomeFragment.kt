@@ -302,15 +302,6 @@ class HomeFragment : Fragment() {
             cameraProvider = cameraProviderFuture.get()
             startCameraIfReady()
         }, ContextCompat.getMainExecutor(context ?: return))
-
-        binding?.cameraPreview?.let {
-            binding?.focusIndicator?.let { it1 ->
-                enableTapToFocus(
-                    gpuImageView = it,
-                    focusIndicatorView = it1
-                )
-            }
-        }
     }
 
     @OptIn(ExperimentalGetImage::class)
@@ -334,7 +325,15 @@ class HomeFragment : Fragment() {
         cameraControl = camera?.cameraControl ?: return
         binding?.verticalSeekbar?.progress = 2
         cameraControl.setLinearZoom(0.0f)
-        binding?.icZoom?.text = "x1"
+        binding?.icZoom?.text = getString(R.string.x1second)
+        binding?.cameraPreview?.let {
+            binding?.focusIndicator?.let { it1 ->
+                enableTapToFocus(
+                    gpuImageView = it,
+                    focusIndicatorView = it1
+                )
+            }
+        }
     }
 
     private fun allocateBitmapIfNecessary(width: Int, height: Int): Bitmap? {
@@ -343,7 +342,6 @@ class HomeFragment : Fragment() {
         }
         return bitmap
     }
-
 
     private fun saveImage() {
         ImageSaver.saveImage(bitmap, requireContext()) { uri ->
