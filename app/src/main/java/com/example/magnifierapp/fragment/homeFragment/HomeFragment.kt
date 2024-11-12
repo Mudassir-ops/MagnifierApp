@@ -213,6 +213,9 @@ class HomeFragment : Fragment() {
                 drawerLayout.closeDrawer(GravityCompat.START)
                 activity?.privacyPolicyUrl()
             }
+            val packageInfo = context?.packageManager?.getPackageInfo(context?.packageName!!, 0)
+            val versionName = packageInfo?.versionName
+            navDrawer.txtVersion.text = "Version: $versionName"
 
             icFilter.setOnClickListener {
                 if (isFilterClicked) {

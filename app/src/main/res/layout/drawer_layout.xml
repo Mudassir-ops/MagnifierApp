@@ -277,4 +277,15 @@
         app:layout_constraintBottom_toBottomOf="@id/viewPrivacyPolicy"
         app:layout_constraintStart_toEndOf="@id/txtPrivacyPolicy"/>
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/version_1_1"
+        app:fontFamily="sans-serif"
+        android:layout_marginBottom="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
