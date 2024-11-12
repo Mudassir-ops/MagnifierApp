@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ProgressBar;
+
 import androidx.appcompat.widget.AppCompatSeekBar;
 import androidx.core.view.ViewCompat;
 

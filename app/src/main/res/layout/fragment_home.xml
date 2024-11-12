@@ -68,8 +68,8 @@
                 android:progressDrawable="@drawable/bg_custom_seekbar"
                 android:progressTint="@color/white"
                 android:rotation="270"
-                android:splitTrack="false"
                 android:scaleY="-1"
+                android:splitTrack="false"
                 android:thumb="@drawable/ic_zoom_in"
                 android:thumbOffset="@dimen/_10sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -194,6 +194,19 @@
             app:layout_constraintTop_toTopOf="@id/viewRecyclerView"
             tools:listitem="@layout/filter_item" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/focusIndicator"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/focus_indicator"
+            android:tint="@color/red_color"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -208,6 +221,5 @@
             layout="@layout/drawer_layout" />
 
     </com.google.android.material.navigation.NavigationView>
-
 
 </androidx.drawerlayout.widget.DrawerLayout>

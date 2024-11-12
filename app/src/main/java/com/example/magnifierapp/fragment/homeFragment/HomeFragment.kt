@@ -8,12 +8,10 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Surface
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.addCallback
@@ -28,9 +26,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.extensions.enableTapToFocus
+import com.example.extensions.onKeyDown
+import com.example.extensions.setZoom
 import com.example.magnifierapp.R
 import com.example.magnifierapp.camerax.YuvToRgbConverter
 import com.example.magnifierapp.databinding.FragmentHomeBinding
@@ -52,15 +52,13 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageGrayscaleFilter
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSketchFilter
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageSolarizeFilter
 import jp.co.cyberagent.android.gpuimage.util.Rotation
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
+    var zoomLevel: Int = 0
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding
     private val viewModel: HomeViewModel by viewModels()
@@ -70,20 +68,17 @@ class HomeFragment : Fragment() {
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()
     private lateinit var converter: YuvToRgbConverter
     private var bitmap: Bitmap? = null
-    private lateinit var cameraControl: CameraControl
-    private var rateUsDialog: RateUsDialog?=null
+    lateinit var cameraControl: CameraControl
+    private var rateUsDialog: RateUsDialog? = null
     private var isFlashOn = false
     private var currentBrightnessLevel = 0
     private val WRITE_SETTINGS_REQUEST_CODE = 100
 
 
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        rateUsDialog = RateUsDialog(activity?:return)
+        rateUsDialog = RateUsDialog(activity ?: return)
         adapter = FilterAdapter(filterList = listOf(), onItemClick = { itemAndPosition ->
             val (filterDataModel, position) = itemAndPosition
             println("Item clicked: ${filterDataModel.filterImage} at position $position")
@@ -170,13 +165,9 @@ class HomeFragment : Fragment() {
             binding?.filterRecyclerView?.adapter = adapter
         }
 
-
-
         clickListener()
         observerViewModel()
         cameraXSetup()
-
-
     }
 
     private fun observerViewModel() {
@@ -185,7 +176,6 @@ class HomeFragment : Fragment() {
                 adapter?.updateFilterList(filterList)
             }
         }
-
     }
 
     private fun clickListener() {
@@ -213,7 +203,7 @@ class HomeFragment : Fragment() {
             }
             navDrawer.viewFeedback.setOnClickListener {
                 drawerLayout.closeDrawer(GravityCompat.START)
-                activity?.feedBackWithEmail("Feedback","Any Feedback","unknow@gmail.com")
+                activity?.feedBackWithEmail("Feedback", "Any Feedback", "unknow@gmail.com")
             }
             navDrawer.viewMoreApps.setOnClickListener {
                 drawerLayout.closeDrawer(GravityCompat.START)
@@ -234,24 +224,13 @@ class HomeFragment : Fragment() {
                 }
                 isFilterClicked = !isFilterClicked
             }
-
             verticalSeekbar.apply {
                 max = 100
                 setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                    @SuppressLint("SetTextI18n")
                     override fun onProgressChanged(
                         seekBar: SeekBar, progress: Int, fromUser: Boolean
                     ) {
-                        val zoomValue = progress / 100.0f
-                        Log.e("ZoomValue", "onProgressChanged: $progress -> Zoom: $zoomValue")
-                        cameraControl.setLinearZoom(zoomValue)
-
-                        viewLifecycleOwner.lifecycleScope.launch {
-                            val zoomValue1 = 1 + (progress / 10.0).toInt()
-                            withContext(Dispatchers.Main) {
-                                icZoom.text = "x$zoomValue1"
-                            }
-                        }
+                        setZoom(binding, progress)
                     }
 
                     override fun onStartTrackingTouch(seekBar: SeekBar) {}
@@ -260,11 +239,14 @@ class HomeFragment : Fragment() {
             }
             horizontalSeekbar.apply {
                 setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                    override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    override fun onProgressChanged(
+                        seekBar: SeekBar, progress: Int, fromUser: Boolean
+                    ) {
                         if (checkSystemWritePermission()) {
                             val brightnessValue = (progress / 100.0 * 255).toInt()
                             adjustBrightness(brightnessValue)
-                            currentBrightnessLevel = brightnessValue // Update the current brightness level
+                            currentBrightnessLevel =
+                                brightnessValue // Update the current brightness level
                         } else {
                             requestSystemWritePermission()
                         }
@@ -277,17 +259,13 @@ class HomeFragment : Fragment() {
             }
             icFlash.setOnClickListener {
                 isFlashOn = !isFlashOn
-
                 cameraControl.enableTorch(isFlashOn)
                 if (isFlashOn) {
                     binding?.icFlash?.setImageResource(R.drawable.flash_off)
                 } else {
                     binding?.icFlash?.setImageResource(R.drawable.flash_on__1_)
                 }
-
-
             }
-
         }
     }
 
@@ -321,6 +299,15 @@ class HomeFragment : Fragment() {
             cameraProvider = cameraProviderFuture.get()
             startCameraIfReady()
         }, ContextCompat.getMainExecutor(context ?: return))
+
+        binding?.cameraPreview?.let {
+            binding?.focusIndicator?.let { it1 ->
+                enableTapToFocus(
+                    gpuImageView = it,
+                    focusIndicatorView = it1
+                )
+            }
+        }
     }
 
     @OptIn(ExperimentalGetImage::class)
@@ -342,7 +329,6 @@ class HomeFragment : Fragment() {
         val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
         val camera = cameraProvider?.bindToLifecycle(this, cameraSelector, imageAnalysis)
         cameraControl = camera?.cameraControl ?: return
-
         binding?.verticalSeekbar?.progress = 2
         cameraControl.setLinearZoom(0.0f)
         binding?.icZoom?.text = "x1"
@@ -360,8 +346,8 @@ class HomeFragment : Fragment() {
         ImageSaver.saveImage(bitmap, requireContext()) { uri ->
             Toast.makeText(context ?: return@saveImage, "Saved: $uri", Toast.LENGTH_SHORT).show()
             val bundle = Bundle()
-            bundle.putString("imageUri",uri.toString())
-            findNavController().navigate(R.id.action_homeFragment_to_displayImageFragment,bundle)
+            bundle.putString("imageUri", uri.toString())
+            findNavController().navigate(R.id.action_homeFragment_to_displayImageFragment, bundle)
 
         }
     }
@@ -370,17 +356,20 @@ class HomeFragment : Fragment() {
         return Settings.System.canWrite(requireContext())
     }
 
-    private val writeSettingsLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            // Check if permission granted and perform action
-            if (checkSystemWritePermission()) {
-                Toast.makeText(requireContext(), "Permission granted", Toast.LENGTH_SHORT).show()
-                adjustBrightness(currentBrightnessLevel)
-            } else {
-                Toast.makeText(requireContext(), "Permission not granted", Toast.LENGTH_SHORT).show()
+    private val writeSettingsLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                // Check if permission granted and perform action
+                if (checkSystemWritePermission()) {
+                    Toast.makeText(requireContext(), "Permission granted", Toast.LENGTH_SHORT)
+                        .show()
+                    adjustBrightness(currentBrightnessLevel)
+                } else {
+                    Toast.makeText(requireContext(), "Permission not granted", Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
         }
-    }
 
     private fun requestSystemWritePermission() {
         if (!checkSystemWritePermission()) {
@@ -395,19 +384,21 @@ class HomeFragment : Fragment() {
     private fun adjustBrightness(brightnessValue: Int) {
         try {
             Settings.System.putInt(
-                requireContext().contentResolver,
-                Settings.System.SCREEN_BRIGHTNESS,
-                brightnessValue
+                requireContext().contentResolver, Settings.System.SCREEN_BRIGHTNESS, brightnessValue
             )
         } catch (e: SecurityException) {
             e.printStackTrace()
-            Toast.makeText(requireContext(), "Permission required to change brightness", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(), "Permission required to change brightness", Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
     private fun getCurrentBrightness(): Int {
         return try {
-            val brightness = Settings.System.getInt(requireContext().contentResolver, Settings.System.SCREEN_BRIGHTNESS)
+            val brightness = Settings.System.getInt(
+                requireContext().contentResolver, Settings.System.SCREEN_BRIGHTNESS
+            )
             (brightness / 255.0 * 100).toInt()
         } catch (e: Settings.SettingNotFoundException) {
             e.printStackTrace()
@@ -415,17 +406,18 @@ class HomeFragment : Fragment() {
         }
     }
 
-    // Check for permission again when returning to the app
     override fun onResume() {
         super.onResume()
         if (!checkSystemWritePermission()) {
-            Toast.makeText(requireContext(), "Please grant permission to change brightness", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(), "Please grant permission to change brightness", Toast.LENGTH_SHORT
+            ).show()
         } else {
             adjustBrightness(currentBrightnessLevel)
         }
     }
 
-    // Handle the result of the permission request
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == WRITE_SETTINGS_REQUEST_CODE) {
@@ -436,8 +428,13 @@ class HomeFragment : Fragment() {
                 adjustBrightness(currentBrightnessLevel) // Adjust brightness if needed
             } else {
                 // Permission not granted
-                Toast.makeText(requireContext(), "Permission not granted", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Permission not granted", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
+    }
+
+    fun handleVolumeKeys(keyCode: Int): Boolean {
+        return onKeyDown(binding = binding, keyCode = keyCode)
     }
 }

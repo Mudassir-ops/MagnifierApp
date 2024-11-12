@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.magnifierapp.databinding.FilterItemBinding
-import com.example.magnifierapp.fragment.homeFragment.FilterAdapter
 import com.example.magnifierapp.fragment.homeFragment.FilterDataModel
 
 class DisplayAdapter (private var filterList: List<FilterDataModel>, val onItemClick: (Pair<FilterDataModel, Int>) -> Unit) :

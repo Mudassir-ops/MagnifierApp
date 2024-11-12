@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.dagger.hilt.plugins)
     id("kotlin-kapt")
-   // alias(libs.plugins.google.gms.google.services)
+    // alias(libs.plugins.google.gms.google.services)
 }
 android {
     namespace = "com.example.magnifierapp"
@@ -58,8 +58,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-   // implementation(libs.firebase.analytics)
-   // implementation(libs.firebase.crashlytics)
+    // implementation(libs.firebase.analytics)
+    // implementation(libs.firebase.crashlytics)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -23,9 +23,15 @@ import com.example.magnifierapp.databinding.FragmentDisplayImageBinding
 import com.example.magnifierapp.fragment.homeFragment.FilterAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.cyberagent.android.gpuimage.GPUImage
-import jp.co.cyberagent.android.gpuimage.filter.*
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageBrightnessFilter
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageColorInvertFilter
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageContrastFilter
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageGlassSphereFilter
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageGrayscaleFilter
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageSketchFilter
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageSolarizeFilter
 import jp.co.cyberagent.android.gpuimage.util.Rotation
-
 import java.io.File
 import java.io.FileOutputStream
 
