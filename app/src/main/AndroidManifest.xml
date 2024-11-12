@@ -25,7 +25,7 @@
         android:theme="@style/Theme.MagnifierApp"
         tools:targetApi="31">
         <activity
-            android:name=".activity.MainActivity"
+            android:name="com.example.cameraxzoomin.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
