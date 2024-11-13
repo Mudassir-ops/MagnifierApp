@@ -14,7 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.Toast
-import androidx.activity.addCallback
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.OptIn
 import androidx.camera.core.CameraControl
@@ -71,8 +71,8 @@ class HomeFragment : Fragment() {
     lateinit var cameraControl: CameraControl
     private var rateUsDialog: RateUsDialog? = null
     private var isFlashOn = false
-    private var currentBrightnessLevel = 0
-    private val WRITE_SETTINGS_REQUEST_CODE = 100
+    private var brightnessFilter = GPUImageBrightnessFilter(0f)
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -120,28 +120,11 @@ class HomeFragment : Fragment() {
         })
 
         converter = YuvToRgbConverter(context ?: return)
-    }
-
-    private fun getRotation(orientation: Int): Rotation {
-        return when (orientation) {
-            90 -> Rotation.ROTATION_90
-            180 -> Rotation.ROTATION_180
-            270 -> Rotation.ROTATION_270
-            else -> Rotation.NORMAL
-        }
-    }
-
-    fun getCameraOrientation(): Int {
-        val degrees = when (activity?.windowManager?.defaultDisplay?.rotation) {
-            Surface.ROTATION_0 -> 0
-            Surface.ROTATION_90 -> 90
-            Surface.ROTATION_180 -> 180
-            Surface.ROTATION_270 -> 270
-            else -> 0
-        }
-        return (90 - degrees) % 360
 
     }
+
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -152,13 +135,17 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            if (binding?.drawerLayout?.isDrawerOpen(GravityCompat.START) == true) {
-                binding?.drawerLayout?.closeDrawer(GravityCompat.START)
-            } else {
-                showExitDialog()
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (findNavController().currentDestination?.id == R.id.homeFragment) {
+                    showExitDialog()
+                }
+                else {
+                    findNavController().popBackStack()
+                }
             }
-        }
+        })
+
         binding?.filterRecyclerView?.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         if (binding?.filterRecyclerView?.adapter == null) {
@@ -240,23 +227,18 @@ class HomeFragment : Fragment() {
                     override fun onStopTrackingTouch(seekBar: SeekBar) {}
                 })
             }
-            horizontalSeekbar.apply {
+            binding?.horizontalSeekbar?.apply {
+                max = 100
+                progress = 10
+
                 setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                    override fun onProgressChanged(
-                        seekBar: SeekBar, progress: Int, fromUser: Boolean
-                    ) {
-                        if (checkSystemWritePermission()) {
-                            val brightnessValue = (progress / 100.0 * 255).toInt()
-                            adjustBrightness(brightnessValue)
-                            currentBrightnessLevel =
-                                brightnessValue // Update the current brightness level
-                        } else {
-                            requestSystemWritePermission()
-                        }
+                    override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                        val brightnessValue = (progress - 50) / 50f
+                        brightnessFilter.setBrightness(brightnessValue)
+                        binding?.cameraPreview?.filter = brightnessFilter
                     }
 
                     override fun onStartTrackingTouch(seekBar: SeekBar) {}
-
                     override fun onStopTrackingTouch(seekBar: SeekBar) {}
                 })
             }
@@ -278,22 +260,43 @@ class HomeFragment : Fragment() {
         _binding = null
         cameraProvider?.unbindAll()
     }
+    private fun getRotation(orientation: Int): Rotation {
+        return when (orientation) {
+            90 -> Rotation.ROTATION_90
+            180 -> Rotation.ROTATION_180
+            270 -> Rotation.ROTATION_270
+            else -> Rotation.NORMAL
+        }
+    }
+
+    fun getCameraOrientation(): Int {
+        val degrees = when (activity?.windowManager?.defaultDisplay?.rotation) {
+            Surface.ROTATION_0 -> 0
+            Surface.ROTATION_90 -> 90
+            Surface.ROTATION_180 -> 180
+            Surface.ROTATION_270 -> 270
+            else -> 0
+        }
+        return (90 - degrees) % 360
+
+    }
 
 
     private fun showExitDialog() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Exit App")
-        builder.setMessage("Do you want to exit the app?")
-        builder.setPositiveButton("Yes") { dialog, _ ->
-            dialog.dismiss()
-            requireActivity().finish()
+        AlertDialog.Builder(requireContext()).apply {
+            setTitle("Exit App")
+            setMessage("Do you want to exit the app?")
+            setPositiveButton("Yes") { dialog, _ ->
+                dialog.dismiss()
+                requireActivity().finish() // app ko close kar dega
+            }
+            setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss() // dialog ko close kar dega
+            }
+            create()
+            show()
         }
-        builder.setNegativeButton("No") { dialog, _ ->
-            dialog.dismiss()
-        }
-        builder.create().show()
     }
-
     private fun cameraXSetup() {
         binding?.cameraPreview?.setRotation(getRotation(getCameraOrientation()))
         binding?.cameraPreview?.setScaleType(GPUImage.ScaleType.CENTER_CROP)
@@ -353,34 +356,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun checkSystemWritePermission(): Boolean {
-        return Settings.System.canWrite(requireContext())
-    }
-
-    private val writeSettingsLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                // Check if permission granted and perform action
-                if (checkSystemWritePermission()) {
-                    Toast.makeText(requireContext(), "Permission granted", Toast.LENGTH_SHORT)
-                        .show()
-                    adjustBrightness(currentBrightnessLevel)
-                } else {
-                    Toast.makeText(requireContext(), "Permission not granted", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-        }
-
-    private fun requestSystemWritePermission() {
-        if (!checkSystemWritePermission()) {
-            val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
-            intent.data = Uri.parse("package:" + requireContext().packageName)
-            writeSettingsLauncher.launch(intent) // Use ActivityResultLauncher
-        }
-    }
-
-
     // Adjust the brightness based on user input
     private fun adjustBrightness(brightnessValue: Int) {
         try {
@@ -392,46 +367,6 @@ class HomeFragment : Fragment() {
             Toast.makeText(
                 requireContext(), "Permission required to change brightness", Toast.LENGTH_SHORT
             ).show()
-        }
-    }
-
-    private fun getCurrentBrightness(): Int {
-        return try {
-            val brightness = Settings.System.getInt(
-                requireContext().contentResolver, Settings.System.SCREEN_BRIGHTNESS
-            )
-            (brightness / 255.0 * 100).toInt()
-        } catch (e: Settings.SettingNotFoundException) {
-            e.printStackTrace()
-            50 // Default brightness if not found
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (!checkSystemWritePermission()) {
-            Toast.makeText(
-                requireContext(), "Please grant permission to change brightness", Toast.LENGTH_SHORT
-            ).show()
-        } else {
-            adjustBrightness(currentBrightnessLevel)
-        }
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == WRITE_SETTINGS_REQUEST_CODE) {
-            if (checkSystemWritePermission()) {
-                // Permission granted
-                Toast.makeText(requireContext(), "Permission granted", Toast.LENGTH_SHORT).show()
-                activity?.finish()
-                adjustBrightness(currentBrightnessLevel) // Adjust brightness if needed
-            } else {
-                // Permission not granted
-                Toast.makeText(requireContext(), "Permission not granted", Toast.LENGTH_SHORT)
-                    .show()
-            }
         }
     }
 
