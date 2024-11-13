@@ -1,11 +1,15 @@
 package com.example.magnifierapp.activity
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.KeyEvent
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.magnifierapp.fragment.homeFragment.HomeFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,12 +31,30 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
     }
 
+
+
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+
         if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
             val homeFragment =
                 navHostFragment?.childFragmentManager?.fragments?.firstOrNull { it is HomeFragment } as? HomeFragment
             return homeFragment?.handleVolumeKeys(keyCode) ?: super.onKeyDown(keyCode, event)
         }
         return super.onKeyDown(keyCode, event)
+    }
+
+
+    private fun showExitDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Exit App")
+        builder.setMessage("Do you want to exit the app?")
+        builder.setPositiveButton("Yes") { dialog, _ ->
+            dialog.dismiss()
+            this.finish()
+        }
+        builder.setNegativeButton("No") { dialog, _ ->
+            dialog.dismiss()
+        }
+        builder.create().show()
     }
 }
