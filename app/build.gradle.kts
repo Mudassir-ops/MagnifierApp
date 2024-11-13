@@ -3,12 +3,21 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.dagger.hilt.plugins)
     id("kotlin-kapt")
-     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.gms.google.services)
     id("com.google.firebase.crashlytics")
 }
 android {
     namespace = "etech.magnifierplus"
     compileSdk = 34
+
+    signingConfigs {
+        create("release") {
+            storeFile = file("..//magnifier.jks")
+            storePassword = "magnifier"
+            keyAlias = "key0"
+            keyPassword = "magnifier"
+        }
+    }
 
     defaultConfig {
         applicationId = "etech.magnifierplus"
@@ -23,11 +32,19 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            getByName("release") {
+                signingConfig = signingConfigs.getByName("release")
+                isMinifyEnabled = false
+                proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
+                )
+            }
+//            isMinifyEnabled = false
+//            proguardFiles(
+//                getDefaultProguardFile("proguard-android-optimize.txt"),
+//                "proguard-rules.pro"
+//            )
         }
     }
     compileOptions {
