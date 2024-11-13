@@ -28,9 +28,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        val homeFragment =
-            navHostFragment?.childFragmentManager?.fragments?.firstOrNull { it is HomeFragment } as? HomeFragment
-        return homeFragment?.handleVolumeKeys(keyCode) ?: true
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            val homeFragment =
+                navHostFragment?.childFragmentManager?.fragments?.firstOrNull { it is HomeFragment } as? HomeFragment
+            return homeFragment?.handleVolumeKeys(keyCode) ?: super.onKeyDown(keyCode, event)
+        }
+        return super.onKeyDown(keyCode, event)
     }
-
 }
