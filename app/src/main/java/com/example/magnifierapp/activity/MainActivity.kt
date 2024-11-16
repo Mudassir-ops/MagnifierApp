@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
 
         if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
@@ -43,18 +42,4 @@ class MainActivity : AppCompatActivity() {
         return super.onKeyDown(keyCode, event)
     }
 
-
-    private fun showExitDialog() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Exit App")
-        builder.setMessage("Do you want to exit the app?")
-        builder.setPositiveButton("Yes") { dialog, _ ->
-            dialog.dismiss()
-            this.finish()
-        }
-        builder.setNegativeButton("No") { dialog, _ ->
-            dialog.dismiss()
-        }
-        builder.create().show()
-    }
 }
