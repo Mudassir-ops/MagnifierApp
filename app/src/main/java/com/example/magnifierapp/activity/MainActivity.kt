@@ -29,9 +29,9 @@ class MainActivity : AppCompatActivity() {
         }
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
-    }
+    }saSAsa
 
-
+asASA
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
 
         if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
